@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:xml_restapi_flutter/news_model.dart';
 
@@ -170,6 +171,15 @@ class _NewsPageState extends State<NewsPage> {
               mewItem.description.cdata,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            ElevatedButton(
+              onPressed: () async {
+                var url = mewItem.link.t;
+                if (await canLaunchUrlString(url)) {
+                  launchUrlString(url);
+                }
+              },
+              child: const Text("Read Full Article"),
+            )
           ],
         ),
       )),
