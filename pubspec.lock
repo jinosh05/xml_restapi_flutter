@@ -68,7 +68,7 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
@@ -249,7 +249,7 @@ packages:
     source: hosted
     version: "6.5.0"
   xml2json:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: xml2json
       sha256: d97aed12d54193611c442c268155398f4170b52cfc0058aabbd79160c9c8eefb

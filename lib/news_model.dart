@@ -65,7 +65,7 @@ class Channel {
   final Copyright copyright;
   final Copyright docs;
   final ImageModel image;
-  final List<Item> item;
+  final List<NewsItem> item;
 
   Channel({
     required this.atomLink,
@@ -89,7 +89,8 @@ class Channel {
         copyright: Copyright.fromJson(json["copyright"]),
         docs: Copyright.fromJson(json["docs"]),
         image: ImageModel.fromJson(json["image"]),
-        item: List<Item>.from(json["item"].map((x) => Item.fromJson(x))),
+        item:
+            List<NewsItem>.from(json["item"].map((x) => NewsItem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -169,7 +170,7 @@ class ImageModel {
       };
 }
 
-class Item {
+class NewsItem {
   final Copyright title;
   final Description description;
   final Copyright link;
@@ -178,7 +179,7 @@ class Item {
   final Copyright dcCreator;
   final Enclosure enclosure;
 
-  Item({
+  NewsItem({
     required this.title,
     required this.description,
     required this.link,
@@ -188,7 +189,7 @@ class Item {
     required this.enclosure,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory NewsItem.fromJson(Map<String, dynamic> json) => NewsItem(
         title: Copyright.fromJson(json["title"]),
         description: Description.fromJson(json["description"]),
         link: Copyright.fromJson(json["link"]),

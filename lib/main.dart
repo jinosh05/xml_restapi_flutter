@@ -62,11 +62,11 @@ class _MainAppState extends State<MainApp> {
         debugPrint("Done");
       } else {
         // Handle error
-        print('Error: ${response.statusCode}');
+        debugPrint('Error: ${response.statusCode}');
       }
     } catch (e) {
       // Handle exception
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     }
   }
 
@@ -105,7 +105,16 @@ class _MainAppState extends State<MainApp> {
                   }
                   return const SizedBox();
                 },
-              )
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return NewsPage(mewItem: model!.rss.channel.item[1]);
+                      },
+                    ));
+                  },
+                  child: const Text("Navigate Now"))
             ]
           ],
         ),
@@ -117,3 +126,53 @@ class _MainAppState extends State<MainApp> {
 /// Fetch imageData in Uint8List
 Future<Uint8List> getImage(String url) async =>
     (await get(Uri.parse(url))).bodyBytes;
+
+class NewsPage extends StatefulWidget {
+  const NewsPage({super.key, required this.mewItem});
+  final NewsItem mewItem;
+
+  @override
+  State<NewsPage> createState() => _NewsPageState();
+}
+
+class _NewsPageState extends State<NewsPage> {
+  @override
+  Widget build(BuildContext context) {
+    NewsItem mewItem = widget.mewItem;
+
+    return Scaffold(
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text(
+              mewItem.title.t,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: FutureBuilder(
+                future: getImage(mewItem.enclosure.url),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data != null) {
+                      return Image.memory(
+                        snapshot.data!,
+                      );
+                    }
+                  }
+                  return const SizedBox();
+                },
+              ),
+            ),
+            Text(
+              mewItem.description.cdata,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      )),
+    );
+  }
+}
