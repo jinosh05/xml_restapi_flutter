@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -77,19 +78,33 @@ class _MainAppState extends State<MainApp> {
           children: [
             Center(
               child: InkWell(
-                  onTap: () async {
-                    fetchData();
-                  },
-                  child: const Text(
-                    'Hello World',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  )),
+                onTap: () async {
+                  fetchData();
+                },
+                child: const Text(
+                  'Hello World',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ),
             if (model != null) ...[
               Text(
                 model!.rss.channel.title.t,
+              ),
+              FutureBuilder(
+                future: getImage(model!.rss.channel.image.url.t),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data != null) {
+                      return Image.memory(
+                        snapshot.data!,
+                      );
+                    }
+                  }
+                  return const SizedBox();
+                },
               )
             ]
           ],
@@ -98,3 +113,7 @@ class _MainAppState extends State<MainApp> {
     );
   }
 }
+
+/// Fetch imageData in Uint8List
+Future<Uint8List> getImage(String url) async =>
+    (await get(Uri.parse(url))).bodyBytes;

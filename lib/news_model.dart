@@ -64,7 +64,7 @@ class Channel {
   final Copyright language;
   final Copyright copyright;
   final Copyright docs;
-  final Image image;
+  final ImageModel image;
   final List<Item> item;
 
   Channel({
@@ -88,7 +88,7 @@ class Channel {
         language: Copyright.fromJson(json["language"]),
         copyright: Copyright.fromJson(json["copyright"]),
         docs: Copyright.fromJson(json["docs"]),
-        image: Image.fromJson(json["image"]),
+        image: ImageModel.fromJson(json["image"]),
         item: List<Item>.from(json["item"].map((x) => Item.fromJson(x))),
       );
 
@@ -145,18 +145,18 @@ class Copyright {
       };
 }
 
-class Image {
+class ImageModel {
   final Copyright title;
   final Copyright link;
   final Copyright url;
 
-  Image({
+  ImageModel({
     required this.title,
     required this.link,
     required this.url,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
         title: Copyright.fromJson(json["title"]),
         link: Copyright.fromJson(json["link"]),
         url: Copyright.fromJson(json["url"]),
