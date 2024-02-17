@@ -1,8 +1,9 @@
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
+import 'package:xml_restapi_flutter/news_model.dart';
 
 void main() => runApp(const MyApp());
 
@@ -28,9 +29,11 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  NewsModel? model;
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   Future<void> fetchData() async {
@@ -49,7 +52,13 @@ class _MainAppState extends State<MainApp> {
         final String jsonData = xml2json.toGData();
 
         // Use the jsonData as per your requirement
-        log(jsonData);
+        // log(jsonData);
+
+        setState(() {
+          model = NewsModel.fromJson(jsonDecode(jsonData));
+        });
+
+        debugPrint("Done");
       } else {
         // Handle error
         print('Error: ${response.statusCode}');
@@ -78,6 +87,11 @@ class _MainAppState extends State<MainApp> {
                     ),
                   )),
             ),
+            if (model != null) ...[
+              Text(
+                model!.rss.channel.title.t,
+              )
+            ]
           ],
         ),
       ),
